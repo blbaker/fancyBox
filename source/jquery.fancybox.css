@@ -77,7 +77,7 @@
 	max-height: 100%;
 }
 
-#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
+#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span, .fancybox-mute span {
 	background-image: url(fancybox_sprite.png);
 }
 
@@ -121,12 +121,28 @@
 	z-index: 8040;
 }
 
+.fancybox-mute {
+	position: absolute;
+	cursor: pointer;
+	text-decoration: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	z-index: 8050;
+  width: 44px;
+  height: 44px;
+  visibility: visible;
+}
+
 .fancybox-prev {
 	left: 0;
 }
 
 .fancybox-next {
 	right: 0;
+}
+
+.fancybox-mute {
+	right: 40px;
+  bottom: 40px;
 }
 
 .fancybox-nav span {
@@ -148,6 +164,26 @@
 .fancybox-next span {
 	right: 10px;
 	background-position: 0 -72px;
+}
+
+.fancybox-mute span {
+  display: block;
+	right: 10px;
+	background-position: 0 -255px;
+  width: 44px;
+  height: 44px;
+}
+
+.fancybox-mute span:hover {
+	background-position: 0 -304px;
+}
+
+.fancybox-mute.unmuted span{
+	background-position: 0 -157px;
+}
+
+.fancybox-mute.unmuted span:hover {
+	background-position: 0 -206px;
 }
 
 .fancybox-nav:hover span {
@@ -263,9 +299,9 @@
 	   only screen and (min--moz-device-pixel-ratio: 1.5),
 	   only screen and (min-device-pixel-ratio: 1.5){
 
-	#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
+	#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span, .fancybox-mute span {
 		background-image: url(fancybox_sprite@2x.png);
-		background-size: 44px 152px; /*The size of the normal image, half the size of the hi-res image*/
+		background-size: 44px 348px; /*The size of the normal image, half the size of the hi-res image*/
 	}
 
 	#fancybox-loading div {

@@ -139,12 +139,14 @@
 			tpl: {
 				wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				image    : '<img class="fancybox-image" src="{href}" alt="" />',
+        video    : '<video class="fancybox-video" width="100%" muted autoplay loop="loop"><source src="{href}"></video>',
 				iframe   : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen' + (IE ? ' allowtransparency="true"' : '') + '></iframe>',
 				error    : '<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',
 				closeBtn : '<a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>',
 				next     : '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',
 				prev     : '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>',
-				loading  : '<div id="fancybox-loading"><div></div></div>'
+				loading  : '<div id="fancybox-loading"><div></div></div>',
+        mute: '<div title="Mute" class="fancybox-mute"><span></span></div>'
 			},
 
 			// Properties for each animation type
@@ -297,6 +299,9 @@
 						if (F.isImage(href)) {
 							type = 'image';
 
+						} else if (F.isVideo(href)) {
+							type = 'video';
+
 						} else if (F.isSWF(href)) {
 							type = 'swf';
 
@@ -419,7 +424,7 @@
 				F.isOpen = F.isOpened = false;
 				F.isClosing = true;
 
-				$('.fancybox-item, .fancybox-nav').remove();
+				$('.fancybox-item, .fancybox-nav, .fancybox-mute').remove();
 
 				F.wrap.stop(true, true).removeClass('fancybox-opened');
 
@@ -486,6 +491,15 @@
 				F.jumpto(current.index + 1, direction, 'next');
 			}
 		},
+
+    mute: function(){
+			var current = F.current;
+      if(current){
+        $(F.outer).find(".fancybox-mute").toggleClass('unmuted');
+        var muted = $(F.inner).find("video").prop("muted");
+        $(F.inner).find("video").prop("muted", !muted);
+      }
+    },
 
 		// Navigate to previous gallery item
 		prev: function ( direction ) {
@@ -771,6 +785,10 @@
 
 		isImage: function (str) {
 			return isString(str) && str.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|png|bmp|webp|svg)((\?|#).*)?$)/i);
+		},
+
+		isVideo: function (str) {
+			return isString(str) && str.match(/\.(mp4)((\?|#).*)?$/i);
 		},
 
 		isSWF: function (str) {
@@ -1123,6 +1141,15 @@
 
 				case 'image':
 					content = current.tpl.image.replace(/\{href\}/g, href);
+				break;
+
+				case 'video':
+					content = current.tpl.video.replace(/\{href\}/g, href);
+
+  				$(current.tpl.mute).appendTo(F.outer).bind('click.fb', F.mute);
+          $(current.tpl.mute).click(function(){
+
+          });
 				break;
 
 				case 'swf':
